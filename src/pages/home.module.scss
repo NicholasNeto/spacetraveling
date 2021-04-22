@@ -4,13 +4,15 @@
     margin: 0 auto;
     padding: 0 2rem;
 
-
+    .logo {
+        margin-top: 5rem;
+        margin-left: 10rem;
+    }
 }
 
 .posts {
     max-width: 720px;
     margin: 5rem auto 0;  
-    
     
     a {
         display: block;
@@ -21,7 +23,6 @@
         }
 
         strong {
-            display: block;
             margin-top: 1rem;
             
             font-family: Inter;
@@ -38,8 +39,6 @@
 
         p {
             color: var(--body);
-            margin: 0.5rem;
-        
             font-family: Inter;
             font-style: normal;
             font-weight: normal;
@@ -47,14 +46,22 @@
             line-height: 1.375rem;
             
             text-align: justify;
+            margin: 5px auto 24px;
+        }
+    }
+
+
+    .content {
+        display: flex;
+        
+
+        div:first-child {
+            margin-right: 24px;
         }
 
-
+        
         time {
             font-size: 1rem;  
-            display: flex;
-            align-items: center;
-            color: var(--gray-300);
         }
     }
 }

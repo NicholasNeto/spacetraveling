@@ -6,6 +6,9 @@ import Prismic from '@prismicio/client'
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import { RichText } from 'prismic-dom'
+import { AiOutlineCalendar } from 'react-icons/ai';
+import { BsPerson } from 'react-icons/bs';
+
 
 interface Post {
   uid?: string;
@@ -49,16 +52,23 @@ export default function Home({ postsPagination }: HomeProps) {
   return (
     <>
       <main className={styles.container}>
-        <img src="/Logo.svg" alt="logo" />
+        <div className={styles.logo}>
+          <img src="/Logo.svg" alt="logo" />
+        </div>
         <div className={styles.posts}>
           {postsPagination.results.map(post => (
             <Link href={`/post/${post.uid}`}>
               <a>
                 <strong>{post.data.title}</strong>
                 <p>{post.data.subtitle}</p>
-                <div>
-                  <time>{post.first_publication_date}</time>
-                  <span>{post.data.author}</span>
+                <div className={styles.content}>
+                  <div>  <AiOutlineCalendar />
+                    <time>{post.first_publication_date}</time>
+                  </div>
+                  <div>
+                    <BsPerson />
+                    <span>{post.data.author}</span>
+                  </div>
                 </div>
               </a>
             </Link>
@@ -91,6 +101,7 @@ export const getStaticProps: GetStaticProps = async () => {
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
+        author: post.data.author,
       }
     }
   })
