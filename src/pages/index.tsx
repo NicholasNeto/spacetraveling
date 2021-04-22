@@ -34,23 +34,12 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
 
+  async function handleLoadMorePosts(){
 
-  //   <main className={styles.container}>
-  //   <div className={styles.posts}>
-  //       {posts.map(post => (
-  //           <Link href={`/posts/preview/${post.slug}`} key={post.slug}>
-  //               <a >
-  //                   <time>{post.updatedAt}</time>
-  //                   <strong>{post.title}</strong>
-  //                   <p>{post.excerpt}</p>
-  //               </a>
-  //           </Link>
-  //       ))}
-  //   </div>
-  // </main>
-
-
-
+    const popostsResponse = await fetch(postsPagination.next_page)
+    console.log('popostsResponse', popostsResponse)
+    console.log('loading')
+  }
 
   return (
     <>
@@ -77,7 +66,7 @@ export default function Home({ postsPagination }: HomeProps) {
             </Link>
           ))}
         </div>
-        {postsPagination.next_page && <div> Carregar mais posts</div>}
+        {postsPagination.next_page && <button onClick={handleLoadMorePosts}> Carregar mais posts</button>}
       </main>
     </>
   )
@@ -89,13 +78,12 @@ export const getStaticProps: GetStaticProps = async () => {
     Prismic.Predicates.at('document.type', 'posts')
   ], {
     fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
-    pageSize: 100,
+    pageSize: 1,
   });
 
   const results = postsResponse.results.map((post: Post) => {
     return {
       uid: post.uid,
-      //first_publication_date: format( new Date(post.first_publication_date), 'd LLLL yyyy', {locale: ptBR}),
       first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
