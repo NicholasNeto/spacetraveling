@@ -1,7 +1,13 @@
+import Link from "next/link";
+
 export default function Header() {
   return (
-    <div>
-      <img src="/Logo.svg" alt="logo" />
-    </div>
+    <>
+      <Link href={"/"}>
+        <a>
+          <img src="/Logo.svg" alt="logo" />
+        </a>
+      </Link>
+    </>
   )
 }
