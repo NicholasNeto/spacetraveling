@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import styles from './home.module.scss';
+import { useState } from 'react';
 
 interface Post {
   uid?: string;
@@ -34,11 +35,30 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
 
-  async function handleLoadMorePosts(){
 
-    const popostsResponse = await fetch(postsPagination.next_page)
-    console.log('popostsResponse', popostsResponse)
-    console.log('loading')
+  const [posts, setPosts] = useState(postsPagination.results)
+  const [isNextPage, setIsNextPage] = useState(postsPagination.next_page)
+
+  
+  async function handleLoadMorePosts() {
+
+    const response = await fetch(postsPagination.next_page)
+    const { results, next_page } = await response.json()
+
+    const morePosts = results.map((post: Post) => {
+      return {
+        uid: post.uid,
+        first_publication_date: post.first_publication_date,
+        data: {
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
+        }
+      }
+    })
+
+    setPosts(posts.concat(morePosts));
+    setIsNextPage(next_page)
   }
 
   return (
@@ -48,14 +68,14 @@ export default function Home({ postsPagination }: HomeProps) {
           <img src="/Logo.svg" alt="logo" />
         </div>
         <div className={styles.posts}>
-          {postsPagination.results.map(post => (
-            <Link href={`/post/${post.uid}`}  key={post.uid}>
+          {posts.map(post => (
+            <Link href={`/post/${post.uid}`} key={post.uid}>
               <a>
                 <strong>{post.data.title}</strong>
                 <p>{post.data.subtitle}</p>
                 <div className={styles.content}>
                   <div>  <AiOutlineCalendar />
-                    <time>{format( new Date(post.first_publication_date), 'd MMM yyyy', {locale: ptBR})}</time>
+                    <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
                   </div>
                   <div>
                     <BsPerson />
@@ -66,7 +86,7 @@ export default function Home({ postsPagination }: HomeProps) {
             </Link>
           ))}
         </div>
-        {postsPagination.next_page && <button onClick={handleLoadMorePosts}> Carregar mais posts</button>}
+        {isNextPage && <button onClick={handleLoadMorePosts}> Carregar mais posts</button>}
       </main>
     </>
   )
@@ -92,9 +112,6 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     }
   })
-
-
-  console.log('results', results);
 
   return {
     props: {
