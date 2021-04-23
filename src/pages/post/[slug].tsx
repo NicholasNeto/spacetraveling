@@ -32,8 +32,7 @@ interface PostProps {
 export default function Post({ post }: PostProps) {
   return (
     <div>
-      <Header></Header>
-      <img src="/Logo.svg" alt="logo" />
+      <Header />
       teste
     </div>
   )
