@@ -72,15 +72,18 @@ export default function Post({ post }: PostProps) {
           </div>
           <div>
             <BiTime />
-            <span>Tempo de leitura</span>
+            <span>{`${post.readTime}min`}</span>
           </div>
         </div>
 
         <div>
-          <h2>{post.data.content[0].heading}</h2>
-          <p>{post.data.content[0].body}</p>
+          {post.data.content.map(it => {
+            <div key={it.heading}>
+              <h2 >{it.heading}</h2>
+              <p>{it.body}</p>
+            </div>
+          })}
         </div>
-
       </div>
 
     </>
@@ -93,11 +96,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const posts = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts'),
-    //Prismic.Predicates.at('my.article.release_date', new Date('2021-04-24'))
   ]);
 
   const { results } = posts
-  console.log('posts', posts);
 
   const list = results.map(it => {
     return {
@@ -107,20 +108,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
   })
 
-  console.log('list', list);
-
   return {
     paths: [...list],
     fallback: true
   }
-
-  // Busca dos ultimos posts ou algum post especifico.
-  // paths: [
-  //     { params: {slug: 'TypeScript: Vantagens, mitos, dicas e conceitos fundamentais'}}
-  // ],
-
-
-  // { orderings : '[document.first_publication_date]' }
 };
 
 export const getStaticProps: GetStaticProps = async context => {
@@ -128,6 +119,17 @@ export const getStaticProps: GetStaticProps = async context => {
   const { slug } = context.params;
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
+
+
+  console.log('response', response);
+  console.log("---> ", JSON.stringify(response.data.content, null, 2));
+  // const teste = PrismicDOM.RichText.asText(response.data.content.body)
+
+  // console.log('teste', teste)
+
+  let palavras = response.data.content[0].body.reduce((resultSoFar, current) => {
+    return [...resultSoFar, ...current.text.split(" ")]
+  }, [])
 
   const resultContent = response.data.content.map(it => {
     return {
@@ -138,6 +140,7 @@ export const getStaticProps: GetStaticProps = async context => {
 
   const post = {
     first_publication_date: response.first_publication_date,
+    readTime: Math.round(200 / palavras.length),
     data: {
       title: response.data.title,
       banner: {
@@ -147,6 +150,22 @@ export const getStaticProps: GetStaticProps = async context => {
       content: resultContent,
     }
   }
+
+
+  // first_publication_date: string | null;
+  // data: {
+  //   title: string;
+  //   banner: {
+  //     url: string;
+  //   };
+  //   author: string;
+  //   content: {
+  //     heading: string;
+  //     body: {
+  //       text: string;
+  //     }[];
+  //   }[];
+  // };
 
   // console.log('888888', JSON.stringify(post, null, 2))
 
