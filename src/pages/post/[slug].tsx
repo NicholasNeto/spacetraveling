@@ -49,17 +49,15 @@ export default function Post({ post }: PostProps) {
     return <div>Carregando...</div>
   }
 
+
+  debugger
+
   return (
     <>
       <Header />
       <div>
         <img src={post.data.banner.url} alt="banner" />
         <h1>{post.data.title}</h1>
-        <div>
-          <time>{post.first_publication_date}</time>
-          <span>{post.data.author}</span>
-
-        </div>
 
         <div className={styles.content}>
           <div>
@@ -72,18 +70,19 @@ export default function Post({ post }: PostProps) {
           </div>
           <div>
             <BiTime />
-            <span>{`${post.readTime}min`}</span>
+            <span>{`${post.readTime} min`}</span>
           </div>
         </div>
 
-        <div>
-          {post.data.content.map(it => {
+        {post.data.content.map(it => {
+          return (
             <div key={it.heading}>
               <h2 >{it.heading}</h2>
-              <p>{it.body}</p>
+              <div
+                dangerouslySetInnerHTML={{ __html: it.body }} />
             </div>
-          })}
-        </div>
+          )
+        })}
       </div>
 
     </>
@@ -120,27 +119,30 @@ export const getStaticProps: GetStaticProps = async context => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
-
-  console.log('response', response);
-  console.log("---> ", JSON.stringify(response.data.content, null, 2));
-  // const teste = PrismicDOM.RichText.asText(response.data.content.body)
-
-  // console.log('teste', teste)
-
-  let palavras = response.data.content[0].body.reduce((resultSoFar, current) => {
-    return [...resultSoFar, ...current.text.split(" ")]
+  let palavras = response.data.content.reduce((resultSoFar, current) => {
+    return [...resultSoFar, ...PrismicDOM.RichText.asText(current.body).split(" ")]
   }, [])
 
+  let time = Math.round(palavras.length / 200)
+  console.log(palavras.length)
+  console.log('time', time)
+
+
+  // let palavras = response.data.content[0].body.reduce((resultSoFar, current) => {
+  //   return [...resultSoFar, ...current.text.split(" ")]
+  // }, [])
+
   const resultContent = response.data.content.map(it => {
+    let bodyHtml = PrismicDOM.RichText.asHtml(it.body)
     return {
       heading: it.heading,
-      body: it.body.map(item => item.text)
+      body: bodyHtml
     }
   })
 
   const post = {
     first_publication_date: response.first_publication_date,
-    readTime: Math.round(200 / palavras.length),
+    readTime: time,
     data: {
       title: response.data.title,
       banner: {
@@ -151,23 +153,8 @@ export const getStaticProps: GetStaticProps = async context => {
     }
   }
 
+  console.log(JSON.stringify(post, null, 2))
 
-  // first_publication_date: string | null;
-  // data: {
-  //   title: string;
-  //   banner: {
-  //     url: string;
-  //   };
-  //   author: string;
-  //   content: {
-  //     heading: string;
-  //     body: {
-  //       text: string;
-  //     }[];
-  //   }[];
-  // };
-
-  // console.log('888888', JSON.stringify(post, null, 2))
 
   return {
     props: {
