@@ -4,7 +4,7 @@ import React from 'react';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
-
+import { useRouter } from 'next/router'
 
 import Prismic from '@prismicio/client'
 import { AiOutlineCalendar } from 'react-icons/ai';
@@ -40,6 +40,11 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
+  const router = useRouter()
+
+  if (router.isFallback) {
+    return <div>Carregando...</div>
+  }
 
   return (
     <>
