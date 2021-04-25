@@ -88,8 +88,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
     //Prismic.Predicates.at('my.article.release_date', new Date('2021-04-24'))
   ]);
 
+  const { results } = posts
   console.log('posts', posts);
 
+  const list = results.map(it => {
+    return {
+      params: {
+        slug: it.uid
+      }
+    }
+  })
+
+  console.log('list', list);
+
+  return {
+    paths: [...list],
+    fallback: true
+  }
 
   // Busca dos ultimos posts ou algum post especifico.
   // paths: [
@@ -98,22 +113,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 
   // { orderings : '[document.first_publication_date]' }
-
-  // const postsResponse = await prismic.query([
-  //   Prismic.Predicates.at('document.type', 'posts')
-  // ], {
-  //   fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
-  //   pageSize: 1,
-  // });
-
-
-  // { params: { id: '1' } }, { params: { id: '2' } }
-
-  return {
-    paths: [],
-    fallback: true
-  }
-  // TODO
 };
 
 export const getStaticProps: GetStaticProps = async context => {
