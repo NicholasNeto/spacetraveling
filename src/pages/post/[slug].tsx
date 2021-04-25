@@ -1,5 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { RichText } from 'prismic-dom';
+import PrismicDOM from 'prismic-dom';
+
 import React from 'react';
 import Header from '../../components/Header';
 
@@ -20,6 +22,7 @@ import styles from './post.module.scss';
 
 interface Post {
   first_publication_date: string | null;
+  readTime: number,
   data: {
     title: string;
     banner: {
