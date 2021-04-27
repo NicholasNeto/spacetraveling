@@ -1,118 +1,108 @@
-.container {
+.banner {
+    margin-top: 6rem;
+    img {
+        width: 100%;
+        height: 35rem;
+    }
+}
 
-    .banner {
-
-        margin-top: 6rem;
-
-        img {
-            width: 100%;
-            height: 35rem;
-        }
+.main{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    h1 {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 48px;
+        line-height: 58px;
+        /* identical to box height */
+        letter-spacing: -0.5px;
+        color: var(--heading);
     }
 
-    .main{
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 1rem 2rem;
-
-
-        h1 {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 48px;
-            line-height: 58px;
-            /* identical to box height */
-            letter-spacing: -0.5px;
-            color: var(--heading);
+    .info {
+        display: flex;
+        div {
+            margin-right: 24px;
+            color: var(--info);
         }
+    }
+    .secondaryInfo {
+        font-family: Inter;
+        font-style: italic;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 17px;
+        color: var(--info);
+    }
 
-        .containerInfo{
+    h2 {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 36px;
+        line-height: 140%;
+        text-align: justify;
+        color: var(--heading);
+        padding: 2rem 0;
+    }
 
-            .info {
-                display: flex;
-                div {
-                    margin-right: 24px;
-                    color: var(--info);
-                }
-            }
-            .secondaryInfo {
-                font-family: Inter;
-                font-style: italic;
-                font-weight: normal;
-                font-size: 14px;
-                line-height: 17px;
-                color: var(--info);
-            }
-        }
+    .postContent {
+        font-family: Inter;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 140%;
+        text-align: justify;
+        color: var(--body);
+    }
+    
+}
 
-        h2 {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 36px;
-            line-height: 140%;
-            text-align: justify;
-            color: var(--heading);
-            padding: 2rem 0;
-        }
+.footer {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
 
-        .postContent {
+    .border {
+        margin: 3rem auto;
+        border-top: 1px solid #D7D7D7;
+        opacity: 0.1;
+    }
+
+    .footerConteiner {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .footerContent {
+        div {
             font-family: Inter;
             font-style: normal;
             font-weight: normal;
             font-size: 18px;
-            line-height: 140%;
-            text-align: justify;
-            color: var(--body);
+            line-height: 22px;                    
+            letter-spacing: -0.5px;
+            color: #F8F8F8;
         }
-       
+
+        button {
+            color: var(--highlight); 
+            font-family: Inter;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 19px;
+            letter-spacing: -0.5px;
+            background: transparent;
+            border: 0;
+        }
     }
 
-    .footer {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 1rem 2rem;
-
-        .border {
-            margin: 3rem auto;
-            border-top: 1px solid #D7D7D7;
-            opacity: 0.1;
-        }
-
-        .footerConteiner {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .footerContent {
-            div {
-                font-family: Inter;
-                font-style: normal;
-                font-weight: normal;
-                font-size: 18px;
-                line-height: 22px;                    
-                letter-spacing: -0.5px;
-                color: #F8F8F8;
-            }
-
-            button {
-                color: var(--highlight); 
-                font-family: Inter;
-                font-style: normal;
-                font-weight: 600;
-                font-size: 16px;
-                line-height: 19px;
-                letter-spacing: -0.5px;
-                background: transparent;
-                border: 0;
-            }
-        }
-
-        .footerComent{
-            display: flex;
-            justify-content: center;
-        }
-
+    .footerComent{
+        display: flex;
+        justify-content: center;
     }
+
 }
