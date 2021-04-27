@@ -1,1 +1,70 @@
-// TODO
+.container {
+
+    .banner {
+
+        margin-top: 10rem;
+
+        img {
+            width: 100%;
+            height: 35rem;
+        }
+    }
+
+
+    .main{
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+
+
+        h1 {
+            font-family: Inter;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 48px;
+            line-height: 58px;
+            /* identical to box height */
+            letter-spacing: -0.5px;
+            color: var(--heading);
+        }
+
+        .containerInfo{
+
+            .info {
+                display: flex;
+                div {
+                    margin-right: 24px;
+                }
+            }
+            .secondaryInfo {
+                font-family: Inter;
+                font-style: italic;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 17px;
+                color: var(--info);
+            }
+        }
+
+        h2 {
+            font-family: Inter;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 140%;
+            text-align: justify;
+            color: var(--heading);
+        }
+
+        .postContent {
+            font-family: Inter;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            line-height: 140%;
+            text-align: justify;
+            color: var(--body);
+        }
+       
+    }
+}
