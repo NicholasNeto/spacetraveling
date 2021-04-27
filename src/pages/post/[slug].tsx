@@ -69,64 +69,62 @@ export default function Post({ post }: PostProps) {
   return (
     <>
       <Header />
-      <div className={styles.container} >
-        <div className={styles.banner}>
-          <img src={post.data.banner.url} alt="banner" />
+
+      <div className={styles.banner}>
+        <img src={post.data.banner.url} alt="banner" />
+      </div>
+      <main className={styles.main}>
+        <h1>{post.data.title}</h1>
+
+        <div>
+          <div className={styles.info}>
+            <div>
+              <AiOutlineCalendar />
+              <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
+            </div>
+            <div>
+              <BsPerson />
+              <span>{post.data.author}</span>
+            </div>
+            <div>
+              <BiTime />
+              <span>{`${readingTime} min`}</span>
+            </div>
+          </div>
+          <div className={styles.secondaryInfo}>* editado em 19 mar 2021, às 15:49 </div>
         </div>
-        <main className={styles.main}>
-          <h1>{post.data.title}</h1>
 
-          <div className={styles.containerInfo} >
-            <div className={styles.info}>
-              <div>
-                <AiOutlineCalendar />
-                <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
-              </div>
-              <div>
-                <BsPerson />
-                <span>{post.data.author}</span>
-              </div>
-              <div>
-                <BiTime />
-                <span>{`${readingTime} min`}</span>
-              </div>
+        {resultContent.map(it => {
+          return (
+            <div key={it.heading}>
+              <h2 >{it.heading}</h2>
+              <div
+                className={styles.postContent}
+                dangerouslySetInnerHTML={{ __html: it.body }} />
             </div>
-            <span className={styles.secondaryInfo}>* editado em 19 mar 2021, às 15:49 </span>
+          )
+        })}
+      </main>
+
+
+      <div className={styles.footer}>
+        <div className={styles.border} />
+
+        <div className={styles.footerConteiner}>
+          <div className={styles.footerContent} >
+            <div>Hooks</div>
+            <button>Post anterior</button>
           </div>
 
-          {resultContent.map(it => {
-            return (
-              <div key={it.heading}>
-                <h2 >{it.heading}</h2>
-                <div
-                  className={styles.postContent}
-                  dangerouslySetInnerHTML={{ __html: it.body }} />
-              </div>
-            )
-          })}
-        </main>
-
-
-        <div className={styles.footer}>
-          <div className={styles.border} />
-
-          <div className={styles.footerConteiner}>
-            <div className={styles.footerContent} >
-              <div>Hooks</div>
-              <button>Post anterior</button>
-            </div>
-
-            <div className={styles.footerContent}>
-              <div>Criando um app CRA do Zero</div>
-              <button>Próximo post</button>
-            </div>
+          <div className={styles.footerContent}>
+            <div>Criando um app CRA do Zero</div>
+            <button>Próximo post</button>
           </div>
+        </div>
 
 
-          <div className={styles.footerComent}>
-            <img src="/coment.svg" alt="coment" />
-          </div>
-
+        <div className={styles.footerComent}>
+          <img src="/coment.svg" alt="coment" />
         </div>
 
       </div>
