@@ -105,6 +105,30 @@ export default function Post({ post }: PostProps) {
             )
           })}
         </main>
+
+
+        <div className={styles.footer}>
+          <div className={styles.border} />
+
+          <div className={styles.footerConteiner}>
+            <div className={styles.footerContent} >
+              <div>Como utilizar Hooks</div>
+              <button>Post anterior</button>
+            </div>
+
+            <div className={styles.footerContent}>
+              <div>Criando um app CRA do Zero</div>
+              <button>Próximo post</button>
+            </div>
+          </div>
+
+
+          <div className={styles.footerComent}>
+            <img src="/coment.svg" alt="coment" />
+          </div>
+
+        </div>
+
       </div>
 
     </>
