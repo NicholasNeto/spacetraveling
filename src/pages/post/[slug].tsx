@@ -112,7 +112,7 @@ export default function Post({ post }: PostProps) {
 
           <div className={styles.footerConteiner}>
             <div className={styles.footerContent} >
-              <div>Como utilizar Hooks</div>
+              <div>Hooks</div>
               <button>Post anterior</button>
             </div>
 
