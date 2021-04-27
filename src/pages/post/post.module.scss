@@ -2,14 +2,13 @@
 
     .banner {
 
-        margin-top: 10rem;
+        margin-top: 6rem;
 
         img {
             width: 100%;
             height: 35rem;
         }
     }
-
 
     .main{
         max-width: 1120px;
@@ -34,6 +33,7 @@
                 display: flex;
                 div {
                     margin-right: 24px;
+                    color: var(--info);
                 }
             }
             .secondaryInfo {
@@ -54,6 +54,7 @@
             line-height: 140%;
             text-align: justify;
             color: var(--heading);
+            padding: 2rem 0;
         }
 
         .postContent {
@@ -66,5 +67,52 @@
             color: var(--body);
         }
        
+    }
+
+    .footer {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+
+        .border {
+            margin: 3rem auto;
+            border-top: 1px solid #D7D7D7;
+            opacity: 0.1;
+        }
+
+        .footerConteiner {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footerContent {
+            div {
+                font-family: Inter;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 18px;
+                line-height: 22px;                    
+                letter-spacing: -0.5px;
+                color: #F8F8F8;
+            }
+
+            button {
+                color: var(--highlight); 
+                font-family: Inter;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 19px;
+                letter-spacing: -0.5px;
+                background: transparent;
+                border: 0;
+            }
+        }
+
+        .footerComent{
+            display: flex;
+            justify-content: center;
+        }
+
     }
 }
