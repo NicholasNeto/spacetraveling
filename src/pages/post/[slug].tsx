@@ -50,56 +50,61 @@ export default function Post({ post }: PostProps) {
     return <div>Carregando...</div>
   }
 
-
-
   const resultContent = post.data.content.map(it => {
     let bodyHtml = PrismicDOM.RichText.asHtml(it.body)
     return {
-      body: bodyHtml,
-      heading: it.heading
+      heading: it.heading,
+      body: bodyHtml
     }
   })
 
+  const readingTime = post.data.content.reduce((acc, current) => {
+    const bodyText = RichText.asText(current.body)
+    const textLength = bodyText.split(/\s/g).length
+    const time = Math.ceil(textLength / 200)
 
-
-  let words = post.data.content.reduce((resultSoFar, current) => {
-    return [...resultSoFar, ...PrismicDOM.RichText.asText(current.body).split(" ")]
-  }, [])
-
-  let readingTime = Math.round(words.length / 200)
-
+    return acc + time
+  }, 0)
 
   return (
     <>
       <Header />
-      <div>
-        <img src={post.data.banner.url} alt="banner" />
-        <h1>{post.data.title}</h1>
-
-        <div className={styles.content}>
-          <div>
-            <AiOutlineCalendar />
-            <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
-          </div>
-          <div>
-            <BsPerson />
-            <span>{post.data.author}</span>
-          </div>
-          <div>
-            <BiTime />
-            <span>{`${readingTime} min`}</span>
-          </div>
+      <div className={styles.container} >
+        <div className={styles.banner}>
+          <img src={post.data.banner.url} alt="banner" />
         </div>
+        <main className={styles.main}>
+          <h1>{post.data.title}</h1>
 
-        {resultContent.map(it => {
-          return (
-            <div key={it.heading}>
-              <h2 >{it.heading}</h2>
-              <div
-                dangerouslySetInnerHTML={{ __html: it.body }} />
+          <div className={styles.containerInfo} >
+            <div className={styles.info}>
+              <div>
+                <AiOutlineCalendar />
+                <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
+              </div>
+              <div>
+                <BsPerson />
+                <span>{post.data.author}</span>
+              </div>
+              <div>
+                <BiTime />
+                <span>{`${readingTime} min`}</span>
+              </div>
             </div>
-          )
-        })}
+            <span className={styles.secondaryInfo}>* editado em 19 mar 2021, às 15:49 </span>
+          </div>
+
+          {resultContent.map(it => {
+            return (
+              <div key={it.heading}>
+                <h2 >{it.heading}</h2>
+                <div
+                  className={styles.postContent}
+                  dangerouslySetInnerHTML={{ __html: it.body }} />
+              </div>
+            )
+          })}
+        </main>
       </div>
 
     </>
@@ -114,9 +119,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     Prismic.Predicates.at('document.type', 'posts'),
   ]);
 
-  const { results } = posts
-
-  const list = results.map(it => {
+  const allPosts = posts.results.map(it => {
     return {
       params: {
         slug: it.uid
@@ -125,7 +128,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   })
 
   return {
-    paths: [...list],
+    paths: [...allPosts],
     fallback: true
   }
 };
@@ -135,8 +138,6 @@ export const getStaticProps: GetStaticProps = async context => {
   const { slug } = context.params;
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
-
-  console.log('response', response)
 
   const post = {
     uid: response.uid,
@@ -151,10 +152,6 @@ export const getStaticProps: GetStaticProps = async context => {
       content: response.data.content,
     }
   }
-
-
-  console.log(JSON.stringify(post, null, 2))
-
 
   return {
     props: {
