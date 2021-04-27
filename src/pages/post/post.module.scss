@@ -10,6 +10,7 @@
     max-width: 1120px;
     margin: 0 auto;
     padding: 1rem 2rem;
+
     h1 {
         font-family: Inter;
         font-style: normal;
@@ -29,6 +30,7 @@
         }
     }
     .secondaryInfo {
+        margin-top: 1rem;
         font-family: Inter;
         font-style: italic;
         font-weight: normal;
@@ -56,6 +58,14 @@
         line-height: 140%;
         text-align: justify;
         color: var(--body);
+    }
+
+    ul {
+        padding: 2rem;
+    }
+
+    p {
+        padding: 0.5rem;
     }
     
 }
