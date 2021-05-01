@@ -23,7 +23,7 @@ import styles from './post.module.scss';
 interface Post {
   uid: string;
   first_publication_date: string | null;
-  last_publication_date: string | null;
+  last_publication_date?: string | null;
   data: {
     subtitle: string;
     title: string;
@@ -95,7 +95,7 @@ export default function Post({ post }: PostProps) {
           {post.last_publication_date === null || post.last_publication_date === post.first_publication_date ?
             null :
             <div className={styles.secondaryInfo}>
-              {`* editado em ${format(new Date(post.last_publication_date), 'PPpp', { locale: ptBR })}` }
+              {"* editado em " + format(new Date(post.last_publication_date), 'PPpp', { locale: ptBR }) }
             </div>
           }
         </div>
