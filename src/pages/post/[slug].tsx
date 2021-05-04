@@ -24,6 +24,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { getAllPostIds } from './lib/slug';
+import Navegation from '../../components/Navegation';
 
 interface Post {
   uid: string;
@@ -130,25 +131,11 @@ export default function Post({ post, nextPost, previousPost }: PostProps) {
 
         <div className={styles.footerConteiner}>
           <div className={styles.footerContent} >
-            {previousPost &&
-              <>
-                <div>{previousPost.title}</div>
-                <Link href={`/post/${previousPost.href}`}>
-                  <a> Post anterior</a>
-                </Link>
-              </>
-            }
+            {previousPost && <Navegation title={previousPost.title} path={previousPost.href} label='Post anterior' />}
           </div>
 
           <div className={styles.footerContent}>
-            {nextPost &&
-              <>
-                <div>{nextPost.title}</div>
-                <Link href={`/post/${nextPost.href}`}>
-                  <a> Próximo post </a>
-                </Link>
-              </>
-            }
+            {nextPost && <Navegation title={nextPost.title} path={nextPost.href} label='Proximo post' />}
           </div>
         </div>
 
