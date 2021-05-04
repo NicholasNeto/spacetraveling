@@ -2,11 +2,15 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { RichText } from 'prismic-dom';
 import PrismicDOM from 'prismic-dom';
 
+import Link from 'next/link';
+
+import { useRouter } from 'next/router'
+
 import React from 'react';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
-import { useRouter } from 'next/router'
+
 
 import Prismic from '@prismicio/client'
 import { AiOutlineCalendar } from 'react-icons/ai';
@@ -19,6 +23,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
+import { getAllPostIds } from './lib/slug';
 
 interface Post {
   uid: string;
@@ -42,9 +47,16 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  nextPost: { href: string, title: string } | null,
+  previousPost: { href: string, title: string } | null;
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post, nextPost, previousPost }: PostProps) {
+
+  console.log('post', post)
+  console.log('nextPost', nextPost)
+  console.log('previousPost', previousPost)
+
   const router = useRouter()
 
   if (router.isFallback) {
@@ -95,7 +107,7 @@ export default function Post({ post }: PostProps) {
           {post.last_publication_date === null || post.last_publication_date === post.first_publication_date ?
             null :
             <div className={styles.secondaryInfo}>
-              {"* editado em " + format(new Date(post.last_publication_date), 'PPpp', { locale: ptBR }) }
+              {"* editado em " + format(new Date(post.last_publication_date), 'PPpp', { locale: ptBR })}
             </div>
           }
         </div>
@@ -118,16 +130,27 @@ export default function Post({ post }: PostProps) {
 
         <div className={styles.footerConteiner}>
           <div className={styles.footerContent} >
-            <div>Hooks</div>
-            <button>Post anterior</button>
+            {previousPost &&
+              <>
+                <div>{previousPost.title}</div>
+                <Link href={`/post/${previousPost.href}`}>
+                  <a> Post anterior</a>
+                </Link>
+              </>
+            }
           </div>
 
           <div className={styles.footerContent}>
-            <div>Criando um app CRA do Zero</div>
-            <button>Próximo post</button>
+            {nextPost &&
+              <>
+                <div>{nextPost.title}</div>
+                <Link href={`/post/${nextPost.href}`}>
+                  <a> Próximo post </a>
+                </Link>
+              </>
+            }
           </div>
         </div>
-
 
         <div className={styles.footerComent}>
           <img src="/coment.svg" alt="coment" />
@@ -139,24 +162,12 @@ export default function Post({ post }: PostProps) {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-
-  const prismic = getPrismicClient();
-
-  const posts = await prismic.query([
-    Prismic.Predicates.at('document.type', 'posts'),
-  ]);
-
-  const allPosts = posts.results.map(it => {
-    return {
-      params: {
-        slug: it.uid
-      }
-    }
-  })
+export const getStaticPaths: GetStaticPaths = async (post) => {
+  console.log('getStaticPaths')
+  const paths = await getAllPostIds(post)
 
   return {
-    paths: [...allPosts],
+    paths,
     fallback: true
   }
 };
@@ -166,6 +177,31 @@ export const getStaticProps: GetStaticProps = async context => {
   const { slug } = context.params;
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
+
+  const TESTE1 = await prismic.query([
+    Prismic.Predicates.at('document.type', 'posts')
+  ], {
+    'fetch': 'posts.title',
+    'after': response.id,
+    orderings: '[document.first_publication_date]',
+  });
+
+  const TESTE2 = await prismic.query([
+    Prismic.Predicates.at('document.type', 'posts')
+  ], {
+    'fetch': 'posts.title',
+    'after': response.id,
+    orderings: '[document.first_publication_date desc]',
+  });
+
+
+
+  console.log('JSON.stringify(TESTE1, null, 2);', JSON.stringify(TESTE1, null, 2))
+  console.log('-----------------------------------')
+  console.log('JSON.stringify(TESTE2, null, 2);', JSON.stringify(TESTE2, null, 2))
+
+  const nextPost = TESTE1.results.length > 0 ? { href: TESTE1.results[0].uid, title: TESTE1.results[0].data.title } : null
+  const previousPost = TESTE2.results.length > 0 ? { href: TESTE2.results[0].uid, title: TESTE2.results[0].data.title } : null
 
   const post = {
     uid: response.uid,
@@ -185,6 +221,8 @@ export const getStaticProps: GetStaticProps = async context => {
   return {
     props: {
       post,
+      nextPost,
+      previousPost
     },
     redirect: 60 * 30 // 30 minutos
   }
