@@ -1,9 +1,7 @@
 import { getPrismicClient } from "../../../services/prismic";
 import Prismic from '@prismicio/client'
 
-export async function getAllPostIds(post) {
-
-    console.log('POSTTTTT', post)
+export async function getAllPostIds() {
     const prismic = getPrismicClient();
 
     const posts = await prismic.query([
@@ -17,16 +15,4 @@ export async function getAllPostIds(post) {
             }
         }
     })
-
-
-    // return fileNames.map(fileName => {
-    //     return {
-    //         params: {
-    //             id: fileName.replace(/\.md$/, '')
-    //         }
-    //     }
-    // })
-
-
-
 }

@@ -54,10 +54,6 @@ interface PostProps {
 
 export default function Post({ post, nextPost, previousPost }: PostProps) {
 
-  console.log('post', post)
-  console.log('nextPost', nextPost)
-  console.log('previousPost', previousPost)
-
   const router = useRouter()
 
   if (router.isFallback) {
@@ -150,7 +146,6 @@ export default function Post({ post, nextPost, previousPost }: PostProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async (post) => {
-  console.log('getStaticPaths')
   const paths = await getAllPostIds(post)
 
   return {
@@ -180,12 +175,6 @@ export const getStaticProps: GetStaticProps = async context => {
     'after': response.id,
     orderings: '[document.first_publication_date desc]',
   });
-
-
-
-  console.log('JSON.stringify(TESTE1, null, 2);', JSON.stringify(TESTE1, null, 2))
-  console.log('-----------------------------------')
-  console.log('JSON.stringify(TESTE2, null, 2);', JSON.stringify(TESTE2, null, 2))
 
   const nextPost = TESTE1.results.length > 0 ? { href: TESTE1.results[0].uid, title: TESTE1.results[0].data.title } : null
   const previousPost = TESTE2.results.length > 0 ? { href: TESTE2.results[0].uid, title: TESTE2.results[0].data.title } : null
