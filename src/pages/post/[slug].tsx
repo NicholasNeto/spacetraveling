@@ -25,6 +25,7 @@ import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { getAllPostIds } from './lib/slug';
 import Navegation from '../../components/Navegation';
+import Comments from '../../components/Comments';
 
 interface Post {
   uid: string;
@@ -136,7 +137,7 @@ export default function Post({ post, nextPost, previousPost }: PostProps) {
         </div>
 
         <div className={styles.footerComent}>
-          <img src="/coment.svg" alt="coment" />
+          <Comments />
         </div>
 
       </div>
