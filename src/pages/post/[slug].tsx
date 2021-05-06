@@ -136,10 +136,9 @@ export default function Post({ post, nextPost, previousPost }: PostProps) {
           </div>
         </div>
 
-        <div className={styles.footerComent}>
+        <div >
           <Comments />
         </div>
-
       </div>
 
     </>
