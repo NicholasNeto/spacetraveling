@@ -1,22 +1,19 @@
-import React, { Component } from "react";
+import { useEffect } from 'react';
 
-export default class Comments extends Component {
+export default function Comments(): JSX.Element {
+  useEffect(() => {
+    const script = document.createElement('script');
+    const anchor = document.getElementById('inject-comments-for-uterances');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.setAttribute('repo', 'NicholasNeto/spacetraveling');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('async', 'async');
+    anchor.appendChild(script);
+  }, []);
 
-    componentDidMount() {
-        let script = document.createElement("script");
-        let anchor = document.getElementById("inject-comments-for-uterances");
-        script.setAttribute("src", "https://utteranc.es/client.js");
-        script.setAttribute("crossorigin", "anonymous");
-        script.setAttribute("async", true);
-        script.setAttribute("repo", "NicholasNeto/spacetraveling");
-        script.setAttribute("issue-term", "pathname");
-        script.setAttribute("theme", "github-light");
-        anchor.appendChild(script);
-    }
-
-    render() {
-        return (
-            <div id="inject-comments-for-uterances"></div>
-        );
-    }
+  return <div id="inject-comments-for-uterances" />;
 }
+
+
