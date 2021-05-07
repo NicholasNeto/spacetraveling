@@ -37,9 +37,17 @@ const mockedQueryReturn = {
   results: [
     {
       uid: 'como-utilizar-hooks',
+      data: {
+        title: 'Como utilizar hooks',
+        href: 'como-utilizar-hooks'
+      }
     },
     {
       uid: 'criando-um-app-cra-do-zero',
+      data: {
+        title: 'Como utilizar hooks',
+        href: 'como-utilizar-hooks'
+      }
     },
   ],
 };
@@ -184,6 +192,16 @@ const mockedGetByUIDReturn = {
       },
     ],
   },
+  navegationPost: {
+    next: {
+      title: 'Como utilizar hooks',
+      href: 'como-utilizar-hooks'
+    },
+    previous: {
+      title: 'Como utilizar hooks',
+      href: 'como-utilizar-hooks'
+    }
+  }
 };
 
 jest.mock('@prismicio/client');
