@@ -27,6 +27,10 @@ import { getAllPostIds } from './lib/slug';
 import Navegation from '../../components/Navegation';
 import Comments from '../../components/Comments';
 
+interface NavegationPostType {
+  next: { href: string, title: string },
+  previous: { href: string, title: string },
+}
 interface Post {
   uid: string;
   first_publication_date: string | null;
@@ -45,6 +49,7 @@ interface Post {
       }[];
     }[];
   };
+  navegationPost: NavegationPostType;
 }
 
 interface PostProps {
@@ -145,9 +150,8 @@ export default function Post({ post, nextPost, previousPost }: PostProps) {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async (post) => {
-  const paths = await getAllPostIds(post)
-
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = await getAllPostIds()
   return {
     paths,
     fallback: true
@@ -160,7 +164,7 @@ export const getStaticProps: GetStaticProps = async context => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
-  const TESTE1 = await prismic.query([
+  const nextPosts = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
     'fetch': 'posts.title',
@@ -168,7 +172,7 @@ export const getStaticProps: GetStaticProps = async context => {
     orderings: '[document.first_publication_date]',
   });
 
-  const TESTE2 = await prismic.query([
+  const previousPosts = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
     'fetch': 'posts.title',
@@ -176,8 +180,15 @@ export const getStaticProps: GetStaticProps = async context => {
     orderings: '[document.first_publication_date desc]',
   });
 
-  const nextPost = TESTE1.results.length > 0 ? { href: TESTE1.results[0].uid, title: TESTE1.results[0].data.title } : null
-  const previousPost = TESTE2.results.length > 0 ? { href: TESTE2.results[0].uid, title: TESTE2.results[0].data.title } : null
+  const next = nextPosts.results.length > 0 ? {
+    title: nextPosts.results[0].data.title,
+    href: nextPosts.results[0].uid
+  } : null
+
+  const previous = previousPosts.results.length > 0 ? {
+    title: previousPosts.results[0].data.title,
+    href: previousPosts.results[0].uid
+  } : null
 
   const post = {
     uid: response.uid,
@@ -191,14 +202,16 @@ export const getStaticProps: GetStaticProps = async context => {
         url: response.data.banner.url,
       },
       content: response.data.content,
+    },
+    navegationPost: {
+      next,
+      previous
     }
   }
 
   return {
     props: {
       post,
-      nextPost,
-      previousPost
     },
     redirect: 60 * 30 // 30 minutos
   }
