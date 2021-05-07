@@ -54,11 +54,10 @@ interface Post {
 
 interface PostProps {
   post: Post;
-  nextPost: { href: string, title: string } | null,
-  previousPost: { href: string, title: string } | null;
 }
 
-export default function Post({ post, nextPost, previousPost }: PostProps) {
+export default function Post({ post }: PostProps) {
+  const { next, previous } = post.navegationPost
 
   const router = useRouter()
 
@@ -133,11 +132,11 @@ export default function Post({ post, nextPost, previousPost }: PostProps) {
 
         <div className={styles.footerConteiner}>
           <div className={styles.footerContent} >
-            {previousPost && <Navegation title={previousPost.title} path={previousPost.href} label='Post anterior' />}
+            {previous && <Navegation title={previous.title} path={previous.href} label='Post anterior' />}
           </div>
 
           <div className={styles.footerContent}>
-            {nextPost && <Navegation title={nextPost.title} path={nextPost.href} label='Proximo post' />}
+            {next && <Navegation title={next.title} path={next.href} label='Proximo post' />}
           </div>
         </div>
 
