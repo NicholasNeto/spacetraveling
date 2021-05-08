@@ -22,23 +22,6 @@
         color: var(--heading);
     }
 
-    .info {
-        display: flex;
-        div {
-            margin-right: 24px;
-            color: var(--info);
-        }
-    }
-    .secondaryInfo {
-        margin-top: 1rem;
-        font-family: Inter;
-        font-style: italic;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 17px;
-        color: var(--info);
-    }
-
     h2 {
         font-family: Inter;
         font-style: normal;
@@ -66,8 +49,21 @@
 
     p {
         padding: 0.5rem;
+    }  
+
+    aside {
+        margin-top: 2rem;
+
+        display: flex;   
+        justify-content: center;
+        align-items: center;
+
+        color: var(--highlight); 
+        font-family: Inter;
+        font-style: normal;
+        font-weight: 600;
+        letter-spacing: -0.5px;
     }
-    
 }
 
 .footer {
@@ -96,11 +92,5 @@
             letter-spacing: -0.5px;
             color: #F8F8F8;
         }
-    }
-    
-    .footerComent{
-        display: flex;
-        justify-content: center;
-    }
-
+    }   
 }
