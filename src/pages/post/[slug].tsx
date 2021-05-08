@@ -93,7 +93,7 @@ export default function Post({ post, preview }: PostProps) {
         <h1>{post.data.title}</h1>
 
         <div>
-          <div className={styles.info}>
+          <div className={commonStyles.info}>
             <div>
               <AiOutlineCalendar />
               <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
@@ -109,7 +109,7 @@ export default function Post({ post, preview }: PostProps) {
           </div>
           {post.last_publication_date === null || post.last_publication_date === post.first_publication_date ?
             null :
-            <div className={styles.secondaryInfo}>
+            <div className={commonStyles.secondaryInfo}>
               {"* editado em " + format(new Date(post.last_publication_date), 'PPpp', { locale: ptBR })}
             </div>
           }
