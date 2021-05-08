@@ -54,9 +54,10 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  preview: boolean;
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post, preview }: PostProps) {
   const { next, previous } = post.navegationPost
 
   const router = useRouter()
@@ -124,6 +125,15 @@ export default function Post({ post }: PostProps) {
             </div>
           )
         })}
+
+        {preview && (
+          <aside>
+            <Link href="/api/exit-preview">
+              <a>Sair do modo Preview</a>
+            </Link>
+          </aside>
+        )}
+
       </main>
 
 
@@ -144,7 +154,6 @@ export default function Post({ post }: PostProps) {
           <Comments />
         </div>
       </div>
-
     </>
   )
 }
@@ -157,12 +166,26 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getStaticProps: GetStaticProps = async ({ params, preview = false, previewData = {} }) => {
+  const { slug } = params;
+  const { ref } = previewData;
 
-  const { slug } = context.params;
   const prismic = getPrismicClient();
-  const response = await prismic.getByUID('posts', String(slug), {});
 
+  const response = preview && ref ?
+    await prismic.getSingle('posts', { ref }) :
+    await prismic.getByUID('posts', String(slug), {});
+
+  if (!response) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // Pega os proximos posts
   const nextPosts = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
@@ -171,6 +194,12 @@ export const getStaticProps: GetStaticProps = async context => {
     orderings: '[document.first_publication_date]',
   });
 
+  const next = nextPosts.results.length > 0 ? {
+    title: nextPosts.results[0].data.title,
+    href: nextPosts.results[0].uid
+  } : null
+
+  // Pega posts anteriores
   const previousPosts = await prismic.query([
     Prismic.Predicates.at('document.type', 'posts')
   ], {
@@ -178,12 +207,7 @@ export const getStaticProps: GetStaticProps = async context => {
     'after': response.id,
     orderings: '[document.first_publication_date desc]',
   });
-
-  const next = nextPosts.results.length > 0 ? {
-    title: nextPosts.results[0].data.title,
-    href: nextPosts.results[0].uid
-  } : null
-
+  
   const previous = previousPosts.results.length > 0 ? {
     title: previousPosts.results[0].data.title,
     href: previousPosts.results[0].uid
@@ -211,6 +235,7 @@ export const getStaticProps: GetStaticProps = async context => {
   return {
     props: {
       post,
+      preview
     },
     redirect: 60 * 30 // 30 minutos
   }
