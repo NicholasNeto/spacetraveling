@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import styles from './home.module.scss';
+import commonStyles from '../styles/common.module.scss';
 import { useState } from 'react';
 
 interface Post {
@@ -73,7 +74,7 @@ export default function Home({ postsPagination }: HomeProps) {
               <a>
                 <strong>{post.data.title}</strong>
                 <p>{post.data.subtitle}</p>
-                <div className={styles.content}>
+                <div className={commonStyles.info}>
                   <div>  <AiOutlineCalendar />
                     <time>{format(new Date(post.first_publication_date), 'd MMM yyyy', { locale: ptBR })}</time>
                   </div>
