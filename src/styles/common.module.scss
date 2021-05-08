@@ -1,1 +1,25 @@
-// TODO
+
+main {
+    .info {
+        display: flex;
+        
+        svg {
+            margin-right: 0.3rem;
+        }
+
+        div {
+            margin-right: 24px;
+            color: var(--info);
+        }
+    }
+
+    .secondaryInfo {
+        margin-top: 1rem;
+        font-family: Inter;
+        font-style: italic;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 17px;
+        color: var(--info);
+    }
+}
